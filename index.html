@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Gold Tray Board</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -86,6 +88,16 @@
             font-size: 26px;
         }
 
+        .status {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
         .footer {
             text-align: center;
             color: #777;
@@ -111,11 +123,16 @@
             .weight {
                 font-size: 20px;
             }
+
         }
+
     </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -130,6 +147,7 @@
 </header>
 
 
+
 <div class="board">
 
     <table>
@@ -137,35 +155,28 @@
         <thead>
 
             <tr>
+
                 <th>رقم الطريحة</th>
+
                 <th>اسم الطريحة</th>
+
                 <th>القسم الحالي</th>
+
                 <th>الوزن الموجود</th>
+
             </tr>
 
         </thead>
 
-        <tbody>
+
+        <tbody id="trayTable">
 
             <tr>
-                <td class="tray-number">1025</td>
-                <td>Diamond Ring</td>
-                <td class="department">POLISHING</td>
-                <td class="weight">125.40 g</td>
-            </tr>
 
-            <tr>
-                <td class="tray-number">1026</td>
-                <td>Bracelet 01</td>
-                <td class="department">CASTING</td>
-                <td class="weight">238.70 g</td>
-            </tr>
+                <td colspan="4" class="status">
+                    Loading...
+                </td>
 
-            <tr>
-                <td class="tray-number">1027</td>
-                <td>Necklace</td>
-                <td class="department">FINISHING</td>
-                <td class="weight">94.20 g</td>
             </tr>
 
         </tbody>
@@ -175,29 +186,155 @@
 </div>
 
 
+
 <div class="footer">
 
-    Last Update: <span id="time"></span>
+    Last Update:
+    <span id="time"></span>
 
 </div>
 
 
+
 <script>
 
-    function updateTime() {
 
-        const now = new Date();
+// ========================================
+// تحميل الطرائح من قاعدة البيانات
+// ========================================
 
-        document.getElementById("time").textContent =
-            now.toLocaleString("en-GB");
+async function loadTrays() {
+
+    const table = document.getElementById("trayTable");
+
+    try {
+
+        const response = await fetch("/api/trays");
+
+        if (!response.ok) {
+
+            throw new Error("Failed to load trays");
+
+        }
+
+        const trays = await response.json();
+
+
+        // مفيش طرائح
+
+        if (trays.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="4" class="status">
+                        لا توجد طرائح
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        // إنشاء الصفوف
+
+        table.innerHTML = trays.map(tray => `
+
+            <tr>
+
+                <td class="tray-number">
+                    ${escapeHTML(tray.tray_number)}
+                </td>
+
+                <td>
+                    ${escapeHTML(tray.tray_name)}
+                </td>
+
+                <td class="department">
+                    ${escapeHTML(tray.current_department)}
+                </td>
+
+                <td class="weight">
+                    ${Number(tray.current_weight).toFixed(2)} g
+                </td>
+
+            </tr>
+
+        `).join("");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4" class="status error">
+                    حدث خطأ في تحميل البيانات
+                </td>
+            </tr>
+        `;
 
     }
 
-    updateTime();
+}
 
-    setInterval(updateTime, 1000);
+
+
+// ========================================
+// حماية عرض النصوص
+// ========================================
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+// ========================================
+// الساعة
+// ========================================
+
+function updateTime() {
+
+    const now = new Date();
+
+    document.getElementById("time").textContent =
+        now.toLocaleString("en-GB");
+
+}
+
+
+
+// ========================================
+// تشغيل الصفحة
+// ========================================
+
+loadTrays();
+
+updateTime();
+
+
+
+// ========================================
+// تحديث البيانات تلقائيًا كل 5 ثواني
+// ========================================
+
+setInterval(loadTrays, 5000);
+
+setInterval(updateTime, 1000);
+
 
 </script>
 
+
 </body>
+
 </html>
