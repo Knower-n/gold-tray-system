@@ -18,81 +18,59 @@
 
 
         body {
-
             margin: 0;
-
             background: #050505;
-
             color: white;
-
             font-family: Arial, sans-serif;
-
             min-height: 100vh;
-
         }
 
 
         header {
-
             text-align: center;
-
             padding: 30px 15px;
-
             border-bottom: 2px solid #333;
-
         }
 
 
         h1 {
-
             margin: 0;
-
             font-size: 38px;
+        }
 
+
+        .subtitle {
+            margin-top: 8px;
+            color: #888;
+            font-size: 15px;
         }
 
 
         .container {
-
             width: 90%;
-
             max-width: 650px;
-
             margin: 40px auto;
-
         }
 
 
         .card {
-
             background: #111;
-
             border: 1px solid #333;
-
             border-radius: 12px;
-
             padding: 30px;
-
         }
 
 
         .field {
-
             margin-bottom: 20px;
-
         }
 
 
         label {
-
             display: block;
-
             margin-bottom: 8px;
-
             color: #aaa;
-
             font-size: 17px;
-
         }
 
 
@@ -113,6 +91,19 @@
 
             font-size: 18px;
 
+            outline: none;
+        }
+
+
+        input:focus,
+        select:focus {
+            border-color: #777;
+        }
+
+
+        select option {
+            background: #111;
+            color: white;
         }
 
 
@@ -134,13 +125,18 @@
 
             cursor: pointer;
 
+            transition: 0.2s;
         }
 
 
         button:hover {
-
             background: #333;
+        }
 
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
 
@@ -148,7 +144,7 @@
 
             margin-top: 20px;
 
-            padding: 15px;
+            padding: 18px;
 
             border-radius: 7px;
 
@@ -156,6 +152,7 @@
 
             text-align: center;
 
+            line-height: 1.8;
         }
 
 
@@ -165,6 +162,7 @@
 
             color: #7dff9b;
 
+            border: 1px solid #245f35;
         }
 
 
@@ -174,8 +172,95 @@
 
             color: #ff8585;
 
+            border: 1px solid #672424;
         }
 
+
+        .loading {
+            opacity: 0.6;
+        }
+
+
+        .info {
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            background: #0d0d0d;
+
+            border: 1px solid #292929;
+
+            border-radius: 7px;
+
+            color: #888;
+
+            font-size: 14px;
+
+            text-align: center;
+
+            line-height: 1.7;
+        }
+
+
+        .loss-preview {
+
+            display: none;
+
+            margin-top: -5px;
+
+            margin-bottom: 20px;
+
+            padding: 12px;
+
+            background: #181818;
+
+            border: 1px solid #333;
+
+            border-radius: 7px;
+
+            text-align: center;
+
+            color: #aaa;
+
+        }
+
+
+        .loss-value {
+
+            color: #fff;
+
+            font-weight: bold;
+
+            font-size: 20px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            input,
+            select {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 18px;
+            }
+
+        }
 
     </style>
 
@@ -187,9 +272,16 @@
 
 <header>
 
-    <h1>GOLD TRAY UPDATE</h1>
+    <h1>
+        GOLD TRAY UPDATE
+    </h1>
+
+    <div class="subtitle">
+        تحديث حركة الطريحة
+    </div>
 
 </header>
+
 
 
 <div class="container">
@@ -201,9 +293,11 @@
         <form id="updateForm">
 
 
+            <!-- رقم الطريحة -->
+
             <div class="field">
 
-                <label>
+                <label for="trayNumber">
                     رقم الطريحة
                 </label>
 
@@ -211,42 +305,53 @@
                     type="text"
                     id="trayNumber"
                     placeholder="مثال: 1025"
+                    autocomplete="off"
                     required
                 >
 
             </div>
 
 
+
+            <!-- القسم -->
+
             <div class="field">
 
-                <label>
+                <label for="department">
                     القسم الحالي
                 </label>
 
-                <select id="department" required>
+                <select
+                    id="department"
+                    required
+                >
 
                     <option value="">
                         اختر القسم
                     </option>
 
-                    <option value="CASTING">
-                        CASTING
+                    <option value="تازجة وتشطيب">
+                        تازجة وتشطيب
                     </option>
 
-                    <option value="POLISHING">
-                        POLISHING
+                    <option value="جلا">
+                        جلا
                     </option>
 
-                    <option value="FINISHING">
-                        FINISHING
+                    <option value="بنترياج">
+                        بنترياج
                     </option>
 
-                    <option value="QC">
-                        QC
+                    <option value="تربو">
+                        تربو
                     </option>
 
-                    <option value="PACKING">
-                        PACKING
+                    <option value="دمغة">
+                        دمغة
+                    </option>
+
+                    <option value="سنفرة">
+                        سنفرة
                     </option>
 
                 </select>
@@ -254,9 +359,12 @@
             </div>
 
 
+
+            <!-- الوزن الداخل -->
+
             <div class="field">
 
-                <label>
+                <label for="weightIn">
                     الوزن الداخل (g)
                 </label>
 
@@ -272,9 +380,12 @@
             </div>
 
 
+
+            <!-- الوزن الخارج -->
+
             <div class="field">
 
-                <label>
+                <label for="weightOut">
                     الوزن الخارج (g)
                 </label>
 
@@ -290,7 +401,33 @@
             </div>
 
 
-            <button type="submit">
+
+            <!-- عرض الخسارة -->
+
+            <div
+                id="lossPreview"
+                class="loss-preview"
+            >
+
+                الخسارة:
+
+                <span
+                    id="lossValue"
+                    class="loss-value"
+                >
+                    0.00 g
+                </span>
+
+            </div>
+
+
+
+            <!-- زر التحديث -->
+
+            <button
+                type="submit"
+                id="updateButton"
+            >
 
                 UPDATE TRAY
 
@@ -300,9 +437,26 @@
         </form>
 
 
+
+        <!-- نتيجة العملية -->
+
         <div
             id="result"
-            class="result">
+            class="result"
+        >
+        </div>
+
+
+
+        <div class="info">
+
+            الوزن الداخل − الوزن الخارج = الخسارة
+
+            <br>
+
+            بعد التحديث سيتم تغيير القسم والوزن الموجود
+            وتسجيل الحركة في تاريخ الطريحة.
+
         </div>
 
 
@@ -316,14 +470,111 @@
 <script>
 
 
+// ==========================================
+// العناصر
+// ==========================================
+
 const form =
     document.getElementById("updateForm");
-
 
 const result =
     document.getElementById("result");
 
+const updateButton =
+    document.getElementById("updateButton");
 
+const weightInInput =
+    document.getElementById("weightIn");
+
+const weightOutInput =
+    document.getElementById("weightOut");
+
+const lossPreview =
+    document.getElementById("lossPreview");
+
+const lossValue =
+    document.getElementById("lossValue");
+
+
+
+// ==========================================
+// حساب الخسارة أثناء الكتابة
+// ==========================================
+
+function calculateLoss() {
+
+    const weightIn =
+        Number(weightInInput.value);
+
+    const weightOut =
+        Number(weightOutInput.value);
+
+
+    if (
+        Number.isFinite(weightIn) &&
+        Number.isFinite(weightOut) &&
+        weightIn >= 0 &&
+        weightOut >= 0 &&
+        weightOut <= weightIn
+    ) {
+
+        const loss =
+            weightIn - weightOut;
+
+        lossValue.textContent =
+            loss.toFixed(2) + " g";
+
+        lossPreview.style.display =
+            "block";
+
+    } else {
+
+        lossPreview.style.display =
+            "none";
+
+    }
+
+}
+
+
+weightInInput.addEventListener(
+    "input",
+    calculateLoss
+);
+
+
+weightOutInput.addEventListener(
+    "input",
+    calculateLoss
+);
+
+
+
+// ==========================================
+// إظهار النتيجة
+// ==========================================
+
+function showResult(
+    message,
+    type
+) {
+
+    result.className =
+        "result " + type;
+
+    result.innerHTML =
+        message;
+
+    result.style.display =
+        "block";
+
+}
+
+
+
+// ==========================================
+// إرسال التحديث
+// ==========================================
 
 form.addEventListener(
     "submit",
@@ -332,32 +583,123 @@ form.addEventListener(
         event.preventDefault();
 
 
-        result.style.display = "none";
+        // إخفاء النتيجة القديمة
 
+        result.style.display =
+            "none";
+
+
+        // البيانات
 
         const trayNumber =
-            document.getElementById("trayNumber").value.trim();
+            document
+                .getElementById("trayNumber")
+                .value
+                .trim();
 
 
         const department =
-            document.getElementById("department").value;
+            document
+                .getElementById("department")
+                .value;
 
 
         const weightIn =
             Number(
-                document.getElementById("weightIn").value
+                weightInInput.value
             );
 
 
         const weightOut =
             Number(
-                document.getElementById("weightOut").value
+                weightOutInput.value
             );
+
+
+
+        // التحقق
+
+        if (!trayNumber) {
+
+            showResult(
+                "من فضلك أدخل رقم الطريحة",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!department) {
+
+            showResult(
+                "من فضلك اختر القسم",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !Number.isFinite(weightIn) ||
+            !Number.isFinite(weightOut)
+        ) {
+
+            showResult(
+                "من فضلك أدخل الأوزان بشكل صحيح",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            weightIn < 0 ||
+            weightOut < 0
+        ) {
+
+            showResult(
+                "الوزن لا يمكن أن يكون بالسالب",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (weightOut > weightIn) {
+
+            showResult(
+                "الوزن الخارج لا يمكن أن يكون أكبر من الوزن الداخل",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        // تعطيل الزر أثناء الإرسال
+
+        updateButton.disabled =
+            true;
+
+        updateButton.textContent =
+            "جاري التحديث...";
 
 
 
         try {
 
+
+            // إرسال البيانات للـ API
 
             const response =
                 await fetch(
@@ -367,25 +709,28 @@ form.addEventListener(
                         method: "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
 
-                        body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                            tray_number:
-                                trayNumber,
+                                tray_number:
+                                    trayNumber,
 
-                            department:
-                                department,
+                                department:
+                                    department,
 
-                            weight_in:
-                                weightIn,
+                                weight_in:
+                                    weightIn,
 
-                            weight_out:
-                                weightOut
+                                weight_out:
+                                    weightOut
 
-                        })
+                            })
 
                     }
                 );
@@ -397,81 +742,148 @@ form.addEventListener(
 
 
 
+            // لو حصل خطأ
+
             if (!response.ok) {
 
                 throw new Error(
                     data.error ||
-                    "حدث خطأ"
+                    "حدث خطأ أثناء تحديث الطريحة"
                 );
 
             }
 
 
 
-            result.className =
-                "result success";
+            // نجاح
+
+            showResult(
+
+                `
+                    <strong>
+                        تم تحديث الطريحة بنجاح
+                    </strong>
+
+                    <br><br>
+
+                    رقم الطريحة:
+                    <strong>
+                        ${escapeHTML(data.tray_number)}
+                    </strong>
+
+                    <br>
+
+                    الوزن الداخل:
+                    <strong>
+                        ${Number(data.weight_in).toFixed(2)} g
+                    </strong>
+
+                    <br>
+
+                    الوزن الخارج:
+                    <strong>
+                        ${Number(data.weight_out).toFixed(2)} g
+                    </strong>
+
+                    <br>
+
+                    الخسارة:
+                    <strong>
+                        ${Number(data.loss).toFixed(2)} g
+                    </strong>
+
+                    <br>
+
+                    القسم:
+                    <strong>
+                        ${escapeHTML(department)}
+                    </strong>
+                `,
+
+                "success"
+
+            );
 
 
-            result.innerHTML = `
 
-                تم تحديث الطريحة بنجاح ✅
-
-                <br><br>
-
-                الطريحة:
-                <strong>
-                    ${data.tray_number}
-                </strong>
-
-                <br>
-
-                الوزن الداخل:
-                <strong>
-                    ${data.weight_in.toFixed(2)} g
-                </strong>
-
-                <br>
-
-                الوزن الخارج:
-                <strong>
-                    ${data.weight_out.toFixed(2)} g
-                </strong>
-
-                <br>
-
-                الخسارة:
-                <strong>
-                    ${data.loss.toFixed(2)} g
-                </strong>
-
-            `;
-
-
-            result.style.display =
-                "block";
-
+            // تفريغ الفورم
 
             form.reset();
+
+
+            lossPreview.style.display =
+                "none";
+
 
 
         } catch (error) {
 
 
-            result.className =
-                "result error";
+            console.error(error);
 
 
-            result.textContent =
-                error.message;
+            showResult(
+
+                error.message ||
+                "حدث خطأ غير معروف",
+
+                "error"
+
+            );
 
 
-            result.style.display =
-                "block";
+        } finally {
+
+
+            // إعادة تفعيل الزر
+
+            updateButton.disabled =
+                false;
+
+            updateButton.textContent =
+                "UPDATE TRAY";
 
         }
 
     }
 );
+
+
+
+// ==========================================
+// حماية النصوص
+// ==========================================
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
 
 
 </script>
